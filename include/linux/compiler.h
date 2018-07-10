@@ -138,21 +138,21 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
  */
 #define if(cond, ...) __trace_if( (cond , ## __VA_ARGS__) )
 #define __trace_if(cond) \
-    if (__builtin_constant_p(!!(cond)) ? !!(cond) :         \
-    ({                              \
-        int ______r;                        \
-        static struct ftrace_branch_data            \
-            __attribute__((__aligned__(4)))         \
-            __attribute__((section("_ftrace_branch")))  \
-            ______f = {                 \
-                .func = __func__,           \
-                .file = __FILE__,           \
-                .line = __LINE__,           \
-            };                      \
-        ______r = !!(cond);                 \
-        ______f.miss_hit[______r]++;                    \
-        ______r;                        \
-    }))
+	if (__builtin_constant_p(!!(cond)) ? !!(cond) :			\
+	({								\
+		int ______r;						\
+		static struct ftrace_branch_data			\
+			__attribute__((__aligned__(4)))			\
+			__attribute__((section("_ftrace_branch")))	\
+			______f = {					\
+				.func = __func__,			\
+				.file = __FILE__,			\
+				.line = __LINE__,			\
+			};						\
+		______r = !!(cond);					\
+		______f.miss_hit[______r]++;					\
+		______r;						\
+	}))
 #endif /* CONFIG_PROFILE_ALL_BRANCHES */
 
 #else
